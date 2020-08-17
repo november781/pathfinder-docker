@@ -5,6 +5,11 @@ Dockerfile for running [Pathfinder](https://github.com/exodus4d/pathfinder), the
 2. Clone the example `.env` file (`wget https://raw.githubusercontent.com/KryptedGaming/pathfinder-docker/master/.env`)
 3. Fill out the `.env` file and start up your instance with `docker-compose up -d`
 
+You may need to create the databases for your MYSQL image if using a fresh compose. 
+* `sudo docker-compose exec db /bin/bash`
+* `mysql -uroot -p`
+* `CREATE DATABASE pathfinder;`
+* `CREATE DATABASE eve_universe;`
 # Setup
 1. Navigate to your Pathfinder page, go through setup.
 2. Create the databases using the database controls in the setup page.
@@ -17,7 +22,7 @@ Dockerfile for running [Pathfinder](https://github.com/exodus4d/pathfinder), the
 # Importing static database
 1. `wget https://github.com/exodus4d/pathfinder/raw/master/export/sql/eve_universe.sql.zip`
 2. `unzip eve_universe.sql.zip`
-3. `docker cp eve_universe.sql "$(sudo docker-compose ps | grep db | awk '{ print $1}'):/eve_universe.sql"`
+3. `sudo docker cp eve_universe.sql "$(sudo docker-compose ps | grep db | awk '{ print $1}'):/eve_universe.sql"`
 4. `sudo docker-compose exec db sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD" eve_universe < /eve_universe.sql'`
 5. **Optional** `rm eve_universe.sql*`
 6. [Complete Setup.](#Setup)
